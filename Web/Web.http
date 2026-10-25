@@ -1,6 +1,6 @@
 @Web_HostAddress = http://localhost:5000
 
-GET {{Web_HostAddress}}/books
+GET {{Web_HostAddress}}/books?userId=1
 #Accept: application/json
 
 ###
@@ -9,9 +9,19 @@ POST {{Web_HostAddress}}/books
 Content-Type: application/json
 
 {
-  "title": "C# Fundamentals",
+  "title": "C# Fundamentals 2",
   "price": 50,
-  "categoryId": 2
+  "categoryId": 1
+}
+
+###
+
+POST {{Web_HostAddress}}/userbooks
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "bookId": 2
 }
 
 ###
@@ -20,7 +30,7 @@ POST {{Web_HostAddress}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "filankes@gmail.com",
+  "email": "filankes2@gmail.com",
   "password": "filankes123"
 }
 
@@ -30,7 +40,7 @@ POST {{Web_HostAddress}}/auth/register
 Content-Type: application/json
 
 {
-  "fullname": "Filankes Filankesli",
-  "email": "filankes@gmail.com",
+  "fullname": "Filankes Filankesli 2",
+  "email": "filankes2@gmail.com",
   "password": "filankes123"
 }

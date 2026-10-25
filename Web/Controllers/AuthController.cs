@@ -9,23 +9,23 @@ namespace Web.Controllers;
 public sealed class AuthController(AppDbContext context) : ControllerBase
 {
     [Route("login"), HttpPost]
-    public string Login(LoginDto dto)
+    public IActionResult Login(LoginDto dto)
     {
         var user = context.Users.FirstOrDefault(u => u.Email == dto.Email);
 
         if (user is null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
-            return "Belə bir istifadəçi maili ya da şifrəsi təpənqə dəysin";
+            return NotFound("Belə bir istifadəçi maili ya da şifrəsi təpənqə dəysin");
 
-        return "Ok";
+        return Ok();
     }
 
     [Route("register"), HttpPost]
-    public string Register(RegisterDto dto)
+    public IActionResult Register(RegisterDto dto)
     {
         var user = context.Users.FirstOrDefault(u => u.Email == dto.Email);
 
         if (user is not null) 
-            return "Belə bir istifadəçi maili artıq var";
+            return NotFound("Belə bir istifadəçi maili artıq var");
 
         var hashedPassword = BCrypt.Net.BCrypt.HashPassword(dto.Password, BCrypt.Net.BCrypt.GenerateSalt());
 
@@ -39,12 +39,12 @@ public sealed class AuthController(AppDbContext context) : ControllerBase
             context.Users.Add(newUser);
             context.SaveChanges();
 
-            return "Qeydiyyat tamamlandı.";
+            return Created();
         }
 
         catch (Exception ex)
         {
-            return ex.Message;
+            return BadRequest(ex.Message);
         }
     }
 }
